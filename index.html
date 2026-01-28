@@ -31,21 +31,42 @@ input{
  width:100%;padding:14px;font-size:18px;margin-bottom:14px;
  border-radius:10px;border:1px solid #ccd2e0;text-align:center
 }
+
+/* ---- Animated Glass Button ---- */
 .glass-btn{
+ position:relative;
+ overflow:hidden;
  width:100%;padding:16px;font-size:16px;font-weight:600;color:white;
  border-radius:14px;border:none;cursor:pointer;
- background:
-  linear-gradient(135deg,rgba(255,255,255,.4),rgba(255,255,255,0)),
-  linear-gradient(135deg,#3b6cff,#1b3fff);
+ background:linear-gradient(120deg,#3b6cff,#6fb7ff,#3b6cff);
+ background-size:200% 200%;
+ animation:glowMove 4s ease infinite;
  box-shadow:0 12px 30px rgba(59,108,255,.45);
  transition:.4s
 }
-.glass-btn:hover{
- background:
-  linear-gradient(315deg,rgba(255,255,255,.5),rgba(255,255,255,0)),
-  linear-gradient(315deg,#4c7dff,#274bff);
- transform:translateY(-2px)
+.glass-btn::before{
+ content:"";
+ position:absolute; inset:0;
+ background:linear-gradient(60deg,
+   rgba(255,255,255,0) 30%,
+   rgba(255,255,255,.35) 50%,
+   rgba(255,255,255,0) 70%);
+ animation:shine 5s linear infinite;
 }
+.glass-btn:hover{
+ transform:translateY(-2px) scale(1.02);
+ animation-duration:1.5s;
+}
+@keyframes glowMove{
+ 0%{background-position:0% 50%}
+ 50%{background-position:100% 50%}
+ 100%{background-position:0% 50%}
+}
+@keyframes shine{
+ from{transform:translateX(-100%)}
+ to{transform:translateX(100%)}
+}
+
 .error{margin-top:24px;color:#444;font-weight:600}
 </style>
 </head>
