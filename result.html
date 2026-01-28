@@ -36,13 +36,20 @@ h1{font-size:22px;margin:10px 0 0}
 }
 
 .video-box{
- width:100%;margin:16px 0 10px;
+ width:100%;margin:16px 0 4px;
  border-radius:14px;overflow:hidden;
  box-shadow:0 12px 30px rgba(0,0,0,.25)
 }
 .video-box video{width:100%;display:block}
 
-table{width:100%;border-collapse:collapse;margin-top:14px}
+.video-notice{
+ text-align:center;
+ font-size:12px;
+ color:#667;
+ margin-bottom:10px
+}
+
+table{width:100%;border-collapse:collapse;margin-top:10px}
 td{padding:12px 8px;border-bottom:1px solid #e0e4ef}
 td:first-child{color:#555;width:35%}
 
@@ -66,7 +73,7 @@ td:first-child{color:#555;width:35%}
 
 /* Buttons */
 .btn-row{
- display:flex;gap:12px;margin-top:22px
+ display:flex;gap:12px;margin-top:22px;flex-wrap:wrap
 }
 .glass-btn{
  position:relative;overflow:hidden;
@@ -85,8 +92,14 @@ td:first-child{color:#555;width:35%}
  animation:shine 5s linear infinite;
 }
 .glass-btn:hover{transform:translateY(-2px) scale(1.02);animation-duration:1.5s}
-@keyframes glowMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-@keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+
+.print-notice{
+ width:100%;
+ text-align:center;
+ font-size:12px;
+ color:#667;
+ margin-top:8px
+}
 
 /* hide cert on screen */
 .cert{display:none}
@@ -95,7 +108,7 @@ td:first-child{color:#555;width:35%}
 @page{size:A4;margin:18mm}
 @media print{
  body{background:white}
- .header,.congrats-wrap,.video-box,#table,.btn-row{display:none !important}
+ .header,.congrats-wrap,.video-box,.video-notice,#table,.btn-row,.print-notice{display:none !important}
  .panel{box-shadow:none;width:100%;padding:0}
 
  .cert{
@@ -147,10 +160,16 @@ td:first-child{color:#555;width:35%}
  <div class="video-box" id="videoBox" style="display:none">
    <video id="congratsVideo" src="congrats.mp4" autoplay loop muted playsinline></video>
  </div>
+ <div class="video-notice" id="videoNotice" style="display:none">
+   아무 곳이나 터치하면 합격 축하영상과 소리가 자동 재생됩니다.
+ </div>
 
  <table id="table"></table>
 
  <div class="btn-row" id="btnRow"></div>
+ <div class="print-notice" id="printNotice" style="display:none">
+  합격통지서 인쇄는 PC에서 가능합니다.
+ </div>
 
  <!-- ===== PRINT CERTIFICATE ===== -->
  <div class="cert" id="cert">
@@ -206,6 +225,8 @@ if(!DATA[sid]||DATA[sid].birth!==birth||DATA[sid].name!==name){
  if(d.result==="pass"){
   document.getElementById("congratsWrap").style.display="block";
   document.getElementById("videoBox").style.display="block";
+  document.getElementById("videoNotice").style.display="block";
+  document.getElementById("printNotice").style.display="block";
 
   html+=row("모집단위",d.unit);
   html+=row("직위",d.pos);
@@ -216,7 +237,6 @@ if(!DATA[sid]||DATA[sid].birth!==birth||DATA[sid].name!==name){
     <button class="glass-btn" onclick="location.href='index.html'">다시 조회하기</button>
   `;
 
-  // enable sound on first interaction
   document.body.addEventListener("click",()=>{
     if(video.muted){
       video.muted=false;

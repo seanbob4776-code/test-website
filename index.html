@@ -3,85 +3,90 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>계남고등학교 제32대 학생회 합격자 조회</title>
+<title>계남고 학생회 합격자 조회</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;
- font-family:'Noto Sans KR',sans-serif;
+ margin:0;font-family:'Noto Sans KR',sans-serif;
  background:radial-gradient(circle at top,#1b2b45,#0b1220);
- min-height:100vh;
- display:flex;
- justify-content:center;
- align-items:center;
+ min-height:100vh;display:flex;justify-content:center;align-items:center
 }
 .panel{
- width:520px;
- background:linear-gradient(180deg,#fff,#f3f6fb);
- border-radius:24px;
- padding:48px 44px;
+ width:520px;background:linear-gradient(180deg,#fff,#f3f6fb);
+ border-radius:24px;padding:46px 40px 42px;
  box-shadow:0 40px 80px rgba(0,0,0,.35);
- text-align:center;
 }
-.logo{width:90px;margin-bottom:14px}
-h1{font-size:24px;font-weight:800;margin:0 0 6px}
-.sub{font-size:14px;color:#555;margin-bottom:36px}
-input{
- width:100%;padding:14px;font-size:18px;margin-bottom:14px;
- border-radius:10px;border:1px solid #ccd2e0;text-align:center
-}
+.header{text-align:center;margin-bottom:24px}
+.logo{width:90px}
+h1{font-size:22px;margin:10px 0 0}
 
-/* ---- Animated Glass Button ---- */
+.field{margin-top:14px}
+label{font-size:13px;color:#445}
+input{
+ width:100%;padding:14px 14px;margin-top:6px;
+ border-radius:12px;border:1px solid #ccd3e2;
+ font-size:15px;outline:none
+}
+input:focus{border-color:#3b6cff}
+
 .glass-btn{
- position:relative;
- overflow:hidden;
- width:100%;padding:16px;font-size:16px;font-weight:600;color:white;
+ position:relative;overflow:hidden;
+ margin-top:22px;width:100%;padding:16px;font-size:16px;font-weight:700;color:white;
  border-radius:14px;border:none;cursor:pointer;
  background:linear-gradient(120deg,#3b6cff,#6fb7ff,#3b6cff);
  background-size:200% 200%;
  animation:glowMove 4s ease infinite;
  box-shadow:0 12px 30px rgba(59,108,255,.45);
- transition:.4s
+ transition:.35s
 }
 .glass-btn::before{
- content:"";
- position:absolute; inset:0;
- background:linear-gradient(60deg,
-   rgba(255,255,255,0) 30%,
-   rgba(255,255,255,.35) 50%,
-   rgba(255,255,255,0) 70%);
+ content:"";position:absolute; inset:0;
+ background:linear-gradient(60deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.35) 50%,rgba(255,255,255,0) 70%);
  animation:shine 5s linear infinite;
 }
-.glass-btn:hover{
- transform:translateY(-2px) scale(1.02);
- animation-duration:1.5s;
-}
-@keyframes glowMove{
- 0%{background-position:0% 50%}
- 50%{background-position:100% 50%}
- 100%{background-position:0% 50%}
-}
-@keyframes shine{
- from{transform:translateX(-100%)}
- to{transform:translateX(100%)}
+.glass-btn:hover{transform:translateY(-2px) scale(1.02);animation-duration:1.5s}
+
+.notice{
+ margin-top:10px;
+ font-size:12px;
+ color:#667;
+ text-align:center;
+ line-height:1.4
 }
 
-.error{margin-top:24px;color:#444;font-weight:600}
+@keyframes glowMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
 </style>
 </head>
 <body>
 <div class="panel">
- <img src="logo.png" class="logo">
- <h1>계남고등학교 제32대 학생회</h1>
- <div class="sub">합격자 조회</div>
+ <div class="header">
+  <img src="logo.png" class="logo">
+  <h1>계남고등학교 제32대 학생회<br>합격자 조회</h1>
+ </div>
 
- <input id="name" placeholder="이름">
- <input id="sid" placeholder="학번 (5자리)" maxlength="5" inputmode="numeric" pattern="[0-9]*">
- <input id="birth" placeholder="생년월일 (6자리 / YYMMDD 형식)" maxlength="6" inputmode="numeric" pattern="[0-9]*">
+ <div class="field">
+  <label>이름</label>
+  <input id="name" placeholder="이름 입력">
+ </div>
 
- <button class="glass-btn" onclick="go()">조회</button>
- <div id="err" class="error"></div>
+ <div class="field">
+  <label>학번 (5자리)</label>
+  <input id="sid" maxlength="5" placeholder="예: 10714">
+ </div>
+
+ <div class="field">
+  <label>생년월일 (6자리, YYMMDD)</label>
+  <input id="birth" maxlength="6" placeholder="예: 090320">
+ </div>
+
+ <button class="glass-btn" onclick="go()">조회하기</button>
+
+ <div class="notice">
+  합격자 조회 시스템에 문제 발생 시,<br>
+  합격자 조회 시스템이 발송된 연락처로 문의바랍니다.
+ </div>
 </div>
 
 <script>
@@ -89,11 +94,11 @@ function go(){
  const name=document.getElementById("name").value.trim();
  const sid=document.getElementById("sid").value.trim();
  const birth=document.getElementById("birth").value.trim();
- if(!name||!/^\d{5}$/.test(sid)||!/^\d{6}$/.test(birth)){
-  document.getElementById("err").innerText="지원자가 아니거나, 입력정보가 잘못되었습니다.";
-  return;
+ if(!name||sid.length!==5||birth.length!==6){
+   alert("이름, 학번(5자리), 생년월일(6자리)을 정확히 입력해주세요.");
+   return;
  }
- location.href="result.html?name="+encodeURIComponent(name)+"&sid="+sid+"&birth="+birth;
+ location.href=`result.html?name=${encodeURIComponent(name)}&sid=${sid}&birth=${birth}`;
 }
 </script>
 </body>
