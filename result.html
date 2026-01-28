@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>조회 결과</title>
+<title>합격 조회 결과</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
@@ -43,10 +43,9 @@ td:first-child{color:#555;width:35%}
 }
 @keyframes flow{to{background-position:200% center}}
 
-/* ---- Animated Glass Button ---- */
+/* Glass Button */
 .glass-btn{
- position:relative;
- overflow:hidden;
+ position:relative;overflow:hidden;
  margin-top:26px;width:100%;padding:16px;font-size:16px;font-weight:600;color:white;
  border-radius:14px;border:none;cursor:pointer;
  background:linear-gradient(120deg,#3b6cff,#6fb7ff,#3b6cff);
@@ -56,83 +55,56 @@ td:first-child{color:#555;width:35%}
  transition:.4s
 }
 .glass-btn::before{
- content:"";
- position:absolute; inset:0;
- background:linear-gradient(60deg,
-   rgba(255,255,255,0) 30%,
-   rgba(255,255,255,.35) 50%,
-   rgba(255,255,255,0) 70%);
+ content:"";position:absolute; inset:0;
+ background:linear-gradient(60deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.35) 50%,rgba(255,255,255,0) 70%);
  animation:shine 5s linear infinite;
 }
-.glass-btn:hover{
- transform:translateY(-2px) scale(1.02);
- animation-duration:1.5s;
-}
+.glass-btn:hover{transform:translateY(-2px) scale(1.02);animation-duration:1.5s}
 .secondary{margin-top:12px}
+@keyframes glowMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes shine{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
 
-@keyframes glowMove{
- 0%{background-position:0% 50%}
- 50%{background-position:100% 50%}
- 100%{background-position:0% 50%}
-}
-@keyframes shine{
- from{transform:translateX(-100%)}
- to{transform:translateX(100%)}
-}
+/* hide cert on screen */
+.cert, .print-title{display:none}
 
-/* hide certificate on screen */
-.cert{display:none}
-.print-title{display:none}
-
-/* -------- Print Certificate ONLY -------- */
-@page{
- size:A4;
- margin:20mm;
-}
+/* ===== PRINT LAYOUT ===== */
+@page{size:A4;margin:18mm}
 @media print{
  body{background:white}
  .header, #table, .glass-btn{display:none !important}
- .panel{
-  box-shadow:none;
-  width:100%;
-  padding:0;
- }
- .print-title{
-  display:block;
-  text-align:center;
-  font-size:28px;
-  font-weight:800;
-  margin:20px 0 30px;
- }
+ .panel{box-shadow:none;width:100%;padding:0}
+
+ .print-title{display:block;text-align:center;margin-bottom:10px}
+ .print-logo{width:90px;display:block;margin:0 auto 10px}
+
  .cert{
   display:block !important;
+  border:1.5px solid #165F9C;
+  padding:35px 40px 50px;
   position:relative;
-  border:2px solid #165F9C;
-  padding:50px;
-  page-break-inside:avoid;
  }
- .stamp{
-  position:absolute;
-  right:120px;
-  bottom:120px;
-  width:160px;
-  opacity:0.75;
-  z-index:1;
- }
+
+ .cert h2{text-align:center;font-size:26px;margin:10px 0 25px}
+
  .cert table td{
-  border-bottom:1px solid #bbb;
+  border-bottom:1px solid #aaa;
   font-size:16px;
+  padding:14px 8px;
  }
- .cert-text{
-  margin-top:28px;
-  font-size:18px;
-  line-height:1.8;
- }
- .sign{
+
+ .cert-text{margin-top:28px;font-size:18px;line-height:1.8}
+
+ .sign-wrap{
   margin-top:60px;
-  text-align:right;
-  font-size:18px;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:20px;
  }
+
+ .sign-text{text-align:right;font-size:17px;line-height:1.6}
+
+ .stamp{width:140px;opacity:.8}
 }
 </style>
 </head>
@@ -148,19 +120,24 @@ td:first-child{color:#555;width:35%}
  <button class="glass-btn" id="printBtn" onclick="window.print()">합격통지서 인쇄</button>
  <button class="glass-btn secondary" onclick="location.href='index.html'">다시 조회하기</button>
 
- <!-- Print Certificate -->
- <div class="print-title">계남고등학교 제32대 학생회 합격통지서</div>
+ <!-- ===== PRINT CERTIFICATE ===== -->
  <div class="cert" id="cert">
+   <img src="logo.png" class="print-logo">
+   <h2>계남고등학교 제32대 학생회 합격통지서</h2>
    <table id="certTable"></table>
+
    <div class="cert-text">
      위 사람은 계남고등학교 제32대 학생회 선발에<br>
      합격하였음을 통지합니다.
    </div>
-   <div class="sign">
-     <div>계남고등학교</div>
-     <div>학생회장 오제영</div>
+
+   <div class="sign-wrap">
+     <div class="sign-text">
+       계남고등학교<br>
+       학생회장 오제영
+     </div>
+     <img src="stamp.png" class="stamp">
    </div>
-   <img src="stamp.png" class="stamp">
  </div>
 </div>
 
