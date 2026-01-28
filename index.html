@@ -2,143 +2,148 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>계남고등학교 제32대 학생회 합격자 조회</title>
+<meta charset="UTF-8">
+<title>계남고등학교 제32대 학생회 합격자 조회</title>
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      font-family: 'Noto Sans KR', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #222;
-    }
-    .card {
-      background: #ffffff;
-      width: 460px;
-      padding: 48px 40px;
-      border-radius: 18px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.25);
-      text-align: center;
-      animation: fadeIn 0.8s ease;
-    }
-    h1 {
-      font-size: 22px;
-      font-weight: 700;
-      line-height: 1.4;
-      margin-bottom: 12px;
-    }
-    .subtitle {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 36px;
-    }
-    input {
-      width: 100%;
-      padding: 14px;
-      font-size: 18px;
-      text-align: center;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      outline: none;
-      margin-bottom: 20px;
-    }
-    input:focus {
-      border-color: #2c5364;
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: 500;
-      background: #2c5364;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #203a43;
-    }
-    .result {
-      margin-top: 32px;
-      font-size: 20px;
-      font-weight: 700;
-      min-height: 28px;
-    }
-    .pass {
-      color: #1b8f3a;
-    }
-    .fail {
-      color: #c62828;
-    }
-    .invalid {
-      color: #555;
-      font-size: 17px;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .footer {
-      margin-top: 40px;
-      font-size: 12px;
-      color: #aaa;
-    }
-  </style>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background: radial-gradient(circle at top, #1b2b45, #0b1220);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.panel {
+  width: 520px;
+  background: linear-gradient(180deg, #ffffff, #f3f6fb);
+  border-radius: 24px;
+  padding: 48px 44px 42px;
+  box-shadow: 0 40px 80px rgba(0,0,0,.35);
+  text-align: center;
+}
+
+.logo {
+  width: 90px;
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 36px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  border: 1px solid #ccd2e0;
+  text-align: center;
+}
+
+.glass-btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.4), rgba(255,255,255,0)),
+    linear-gradient(135deg, #3b6cff, #1b3fff);
+  box-shadow: 0 12px 30px rgba(59,108,255,.45);
+  transition: all .4s ease;
+}
+
+.glass-btn:hover {
+  background:
+    linear-gradient(315deg, rgba(255,255,255,.5), rgba(255,255,255,0)),
+    linear-gradient(315deg, #4c7dff, #274bff);
+  transform: translateY(-2px);
+}
+
+.result {
+  margin-top: 34px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.pass { color: #1b8f3a; }
+.fail { color: #c62828; }
+.invalid { color: #444; font-size: 17px; }
+
+.footer {
+  margin-top: 40px;
+  font-size: 12px;
+  color: #777;
+}
+</style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>계남고등학교 제32대 학생회<br>지원자 합격조회</h1>
-    <div class="subtitle">Gyenam High School Student Council</div>
+<div class="panel">
+  <img src="logo.png" class="logo">
+  <h1>계남고등학교 제32대 학생회</h1>
+  <div class="subtitle">지원자 합격자 조회 시스템</div>
 
-    <input type="text" id="studentId" placeholder="학번 5자리 입력">
-    <button onclick="checkResult()">조회</button>
+  <input id="sid" placeholder="학번 (5자리)">
+  <input id="birth" placeholder="생년월일 (6자리 / 예: 090320)">
 
-    <div id="result" class="result"></div>
+  <button class="glass-btn" onclick="check()">조회</button>
 
-    <div class="footer">
-      본 결과는 학생회 선발을 위한 참고용 조회입니다.
-    </div>
+  <div id="result" class="result"></div>
+
+  <div class="footer">
+    본 조회 결과는 학생회 선발 결과 확인용입니다.
   </div>
+</div>
 
-  <script>
-    const PASS_ID = "10714";
-    const PASS_ID = "59734";
-    const FAIL_ID = "10715";
+<script>
+const DATA = {
+  "10714": { birth: "090320", result: "pass" },
+  "10715": { birth: "090321", result: "fail" }
+};
 
-    function checkResult() {
-      const input = document.getElementById("studentId").value.trim();
-      const resultBox = document.getElementById("result");
+function check() {
+  const sid = document.getElementById("sid").value.trim();
+  const birth = document.getElementById("birth").value.trim();
+  const box = document.getElementById("result");
 
-      if (!/^\d{5}$/.test(input)) {
-        resultBox.className = "result invalid";
-        resultBox.innerText = "지원자가 아닙니다.";
-        return;
-      }
+  if (!/^\d{5}$/.test(sid) || !/^\d{6}$/.test(birth)) {
+    box.className = "result invalid";
+    box.innerText = "지원자가 아니거나, 입력정보가 잘못되었습니다.";
+    return;
+  }
 
-      if (input === PASS_ID) {
-        resultBox.className = "result pass";
-        resultBox.innerText = "🎉 합격을 진심으로 축하드립니다.";
-      } else if (input === FAIL_ID) {
-        resultBox.className = "result fail";
-        resultBox.innerText = "아쉽게도 불합격하셨습니다.";
-      } else {
-        resultBox.className = "result invalid";
-        resultBox.innerText = "지원자가 아닙니다.";
-      }
+  if (DATA[sid] && DATA[sid].birth === birth) {
+    if (DATA[sid].result === "pass") {
+      box.className = "result pass";
+      box.innerText = "🎉 합격을 진심으로 축하드립니다.";
+    } else {
+      box.className = "result fail";
+      box.innerText = "아쉽게도 불합격하셨습니다.";
     }
-  </script>
+  } else {
+    box.className = "result invalid";
+    box.innerText = "지원자가 아니거나, 입력정보가 잘못되었습니다.";
+  }
+}
+</script>
 </body>
 </html>
