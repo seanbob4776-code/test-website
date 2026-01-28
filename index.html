@@ -55,8 +55,9 @@ input{
  <h1>계남고등학교 제32대 학생회</h1>
  <div class="sub">합격자 조회</div>
 
- <input id="sid" placeholder="학번 (5자리)">
- <input id="birth" placeholder="생년월일 (6자리 / 예: 090320)">
+ <input id="name" placeholder="이름">
+ <input id="sid" placeholder="학번 (5자리)" maxlength="5" inputmode="numeric" pattern="[0-9]*">
+ <input id="birth" placeholder="생년월일 (6자리 / YYMMDD 형식)" maxlength="6" inputmode="numeric" pattern="[0-9]*">
 
  <button class="glass-btn" onclick="go()">조회</button>
  <div id="err" class="error"></div>
@@ -64,13 +65,14 @@ input{
 
 <script>
 function go(){
+ const name=document.getElementById("name").value.trim();
  const sid=document.getElementById("sid").value.trim();
  const birth=document.getElementById("birth").value.trim();
- if(!/^\d{5}$/.test(sid)||!/^\d{6}$/.test(birth)){
+ if(!name||!/^\d{5}$/.test(sid)||!/^\d{6}$/.test(birth)){
   document.getElementById("err").innerText="지원자가 아니거나, 입력정보가 잘못되었습니다.";
   return;
  }
- location.href="result.html?sid="+sid+"&birth="+birth;
+ location.href="result.html?name="+encodeURIComponent(name)+"&sid="+sid+"&birth="+birth;
 }
 </script>
 </body>

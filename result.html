@@ -15,7 +15,8 @@ body{
 .panel{
  width:560px;background:linear-gradient(180deg,#fff,#f3f6fb);
  border-radius:24px;padding:48px 44px;
- box-shadow:0 40px 80px rgba(0,0,0,.35)
+ box-shadow:0 40px 80px rgba(0,0,0,.35);
+ position:relative;
 }
 .header{text-align:center;margin-bottom:24px}
 .logo{width:80px}
@@ -23,6 +24,7 @@ h1{font-size:22px;margin:10px 0 0}
 table{width:100%;border-collapse:collapse;margin-top:18px}
 td{padding:12px 8px;border-bottom:1px solid #e0e4ef}
 td:first-child{color:#555;width:35%}
+
 .result-pass{
  font-weight:800;
  background:linear-gradient(90deg,#3b6cff,#6fb7ff,#3b6cff);
@@ -31,10 +33,18 @@ td:first-child{color:#555;width:35%}
  -webkit-background-clip:text;
  animation:flow 2s linear infinite;
 }
+.result-fail{
+ font-weight:800;
+ background:linear-gradient(90deg,#ff4d4d,#ff9a9a,#ff4d4d);
+ background-size:200% auto;
+ color:transparent;
+ -webkit-background-clip:text;
+ animation:flow 2s linear infinite;
+}
 @keyframes flow{to{background-position:200% center}}
-.result-fail{color:#c62828;font-weight:800}
-.btn{
- margin-top:32px;width:100%;padding:16px;font-size:16px;font-weight:600;color:white;
+
+.glass-btn{
+ margin-top:26px;width:100%;padding:16px;font-size:16px;font-weight:600;color:white;
  border-radius:14px;border:none;cursor:pointer;
  background:
   linear-gradient(135deg,rgba(255,255,255,.4),rgba(255,255,255,0)),
@@ -42,12 +52,62 @@ td:first-child{color:#555;width:35%}
  box-shadow:0 12px 30px rgba(59,108,255,.45);
  transition:.4s
 }
-.btn:hover{
+.glass-btn:hover{
  background:
   linear-gradient(315deg,rgba(255,255,255,.5),rgba(255,255,255,0)),
   linear-gradient(315deg,#4c7dff,#274bff);
  transform:translateY(-2px)
 }
+.secondary{margin-top:12px}
+
+/* -------- Print Certificate -------- */
+@media print{
+ body{background:white}
+ .glass-btn{display:none}
+ .panel{
+  box-shadow:none;
+  width:100%;
+  padding:50px;
+ }
+ .header h1{display:none}
+ .print-title{
+  display:block;
+  text-align:center;
+  font-size:28px;
+  font-weight:800;
+  margin:20px 0 30px;
+ }
+ .cert{
+  display:block;
+  position:relative;
+  border:2px solid #165F9C;
+  padding:50px;
+ }
+ .stamp{
+  position:absolute;
+  right:120px;
+  bottom:120px;
+  width:160px;
+  opacity:0.75;
+  z-index:1;
+ }
+ .cert table td{
+  border-bottom:1px solid #bbb;
+  font-size:16px;
+ }
+ .cert-text{
+  margin-top:28px;
+  font-size:18px;
+  line-height:1.8;
+ }
+ .sign{
+  margin-top:60px;
+  text-align:right;
+  font-size:18px;
+ }
+}
+.print-title{display:none}
+.cert{display:none}
 </style>
 </head>
 <body>
@@ -56,42 +116,81 @@ td:first-child{color:#555;width:35%}
   <img src="logo.png" class="logo">
   <h1>계남고등학교 제32대 학생회<br>합격자 조회 결과</h1>
  </div>
+
  <table id="table"></table>
- <button class="btn" onclick="location.href='index.html'">다시 조회하기</button>
+
+ <button class="glass-btn" id="printBtn" onclick="window.print()">합격통지서 인쇄</button>
+ <button class="glass-btn secondary" onclick="location.href='index.html'">다시 조회하기</button>
+
+ <!-- Print Certificate -->
+ <div class="print-title">계남고등학교 제32대 학생회 합격통지서</div>
+ <div class="cert" id="cert">
+   <table id="certTable"></table>
+   <div class="cert-text">
+     위 사람은 계남고등학교 제32대 학생회 선발에<br>
+     합격하였음을 통지합니다.
+   </div>
+   <div class="sign">
+     <div>계남고등학교</div>
+     <div>학생회장 오제영</div>
+   </div>
+   <img src="stamp.png" class="stamp">
+ </div>
 </div>
 
 <script>
 const DATA={
- "10714":{birth:"090320",track:"콘텐츠문화계열",unit:"언론홍보부",pos:"부장",result:"pass"},
- "10715":{birth:"090420",track:"콘텐츠문화계열",result:"fail"},
- "10716":{birth:"090714",track:"기획행정계열",result:"fail"},
- "10717":{birth:"090812",track:"콘텐츠문화계열",unit:"특별활동부",pos:"차장",result:"pass"},
- "10718":{birth:"090320",track:"기획행정계열",unit:"기획재정부",pos:"부원",result:"pass"}
+ "10714":{name:"오제영",birth:"090320",track:"콘텐츠문화계열",unit:"언론홍보부",pos:"부장",result:"pass"},
+ "10715":{name:"홍길동",birth:"090420",track:"콘텐츠문화계열",result:"fail"},
+ "10716":{name:"이재하",birth:"090714",track:"기획행정계열",result:"fail"},
+ "10717":{name:"최선우",birth:"090812",track:"콘텐츠문화계열",unit:"특별활동부",pos:"차장",result:"pass"},
+ "10718":{name:"오승진",birth:"090320",track:"기획행정계열",unit:"기획재정부",pos:"부원",result:"pass"}
 };
 
 const p=new URLSearchParams(location.search);
 const sid=p.get("sid");
 const birth=p.get("birth");
+const name=p.get("name");
 const t=document.getElementById("table");
+const certTable=document.getElementById("certTable");
+const printBtn=document.getElementById("printBtn");
+const certBox=document.getElementById("cert");
 
-if(!DATA[sid]||DATA[sid].birth!==birth){
+if(!DATA[sid]||DATA[sid].birth!==birth||DATA[sid].name!==name){
  alert("지원자가 아니거나, 입력정보가 잘못되었습니다.");
  location.href="index.html";
 }else{
  const d=DATA[sid];
  function row(a,b){return `<tr><td>${a}</td><td>${b}</td></tr>`}
  let html="";
+ html+=row("이름",d.name);
  html+=row("학번",sid);
  html+=row("생년월일",birth);
  html+=row("지원분야",d.track);
+
  if(d.result==="pass"){
   html+=row("모집단위",d.unit);
   html+=row("직위",d.pos);
   html+=row("결과",'<span class="result-pass">합격</span>');
+  certBox.style.display="block";
  }else{
   html+=row("결과",'<span class="result-fail">불합격</span>');
+  printBtn.style.display="none";
  }
+
  t.innerHTML=html;
+
+ // certificate table
+ let chtml="";
+ chtml+=row("성명",d.name);
+ chtml+=row("학번",sid);
+ chtml+=row("생년월일",birth);
+ chtml+=row("지원분야",d.track);
+ if(d.result==="pass"){
+  chtml+=row("모집단위",d.unit);
+  chtml+=row("직위",d.pos);
+ }
+ certTable.innerHTML=chtml;
 }
 </script>
 </body>
