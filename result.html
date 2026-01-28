@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>조회 결과</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;font-family:'Noto Sans KR',sans-serif;
+ background:radial-gradient(circle at top,#1b2b45,#0b1220);
+ min-height:100vh;display:flex;justify-content:center;align-items:center
+}
+.panel{
+ width:560px;background:linear-gradient(180deg,#fff,#f3f6fb);
+ border-radius:24px;padding:48px 44px;
+ box-shadow:0 40px 80px rgba(0,0,0,.35)
+}
+.header{text-align:center;margin-bottom:24px}
+.logo{width:80px}
+h1{font-size:22px;margin:10px 0 0}
+table{width:100%;border-collapse:collapse;margin-top:18px}
+td{padding:12px 8px;border-bottom:1px solid #e0e4ef}
+td:first-child{color:#555;width:35%}
+.result-pass{
+ font-weight:800;
+ background:linear-gradient(90deg,#3b6cff,#6fb7ff,#3b6cff);
+ background-size:200% auto;
+ color:transparent;
+ -webkit-background-clip:text;
+ animation:flow 2s linear infinite;
+}
+@keyframes flow{to{background-position:200% center}}
+.result-fail{color:#c62828;font-weight:800}
+.btn{
+ margin-top:32px;width:100%;padding:16px;font-size:16px;font-weight:600;color:white;
+ border-radius:14px;border:none;cursor:pointer;
+ background:
+  linear-gradient(135deg,rgba(255,255,255,.4),rgba(255,255,255,0)),
+  linear-gradient(135deg,#3b6cff,#1b3fff);
+ box-shadow:0 12px 30px rgba(59,108,255,.45);
+ transition:.4s
+}
+.btn:hover{
+ background:
+  linear-gradient(315deg,rgba(255,255,255,.5),rgba(255,255,255,0)),
+  linear-gradient(315deg,#4c7dff,#274bff);
+ transform:translateY(-2px)
+}
+</style>
+</head>
+<body>
+<div class="panel">
+ <div class="header">
+  <img src="logo.png" class="logo">
+  <h1>계남고등학교 제32대 학생회<br>합격자 조회 결과</h1>
+ </div>
+ <table id="table"></table>
+ <button class="btn" onclick="location.href='index.html'">다시 조회하기</button>
+</div>
+
+<script>
+const DATA={
+ "10714":{birth:"090320",track:"콘텐츠문화계열",unit:"언론홍보부",pos:"부장",result:"pass"},
+ "10715":{birth:"090420",track:"콘텐츠문화계열",result:"fail"},
+ "10716":{birth:"090714",track:"기획행정계열",result:"fail"},
+ "10717":{birth:"090812",track:"콘텐츠문화계열",unit:"특별활동부",pos:"차장",result:"pass"},
+ "10718":{birth:"090320",track:"기획행정계열",unit:"기획재정부",pos:"부원",result:"pass"}
+};
+
+const p=new URLSearchParams(location.search);
+const sid=p.get("sid");
+const birth=p.get("birth");
+const t=document.getElementById("table");
+
+if(!DATA[sid]||DATA[sid].birth!==birth){
+ alert("지원자가 아니거나, 입력정보가 잘못되었습니다.");
+ location.href="index.html";
+}else{
+ const d=DATA[sid];
+ function row(a,b){return `<tr><td>${a}</td><td>${b}</td></tr>`}
+ let html="";
+ html+=row("학번",sid);
+ html+=row("생년월일",birth);
+ html+=row("지원분야",d.track);
+ if(d.result==="pass"){
+  html+=row("모집단위",d.unit);
+  html+=row("직위",d.pos);
+  html+=row("결과",'<span class="result-pass">합격</span>');
+ }else{
+  html+=row("결과",'<span class="result-fail">불합격</span>');
+ }
+ t.innerHTML=html;
+}
+</script>
+</body>
+</html>
