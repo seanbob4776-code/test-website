@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>계남고등학교 제 32대 학생회 지원자 합격조회</title>
+  <style>
+    body {
+      font-family: 'Malgun Gothic', sans-serif;
+      background: #f5f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      width: 420px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 30px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      background: #1f4fff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #163ad6;
+    }
+    .result {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .pass { color: #1f8b2f; }
+    .fail { color: #c62828; }
+    .invalid { color: #555; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>계남고등학교 제 32대 학생회<br>지원자 합격조회창</h1>
+
+    <input type="text" id="studentId" placeholder="학번 (5자리) 입력">
+    <button onclick="checkResult()">조회</button>
+
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    const PASS_ID = "10714";
+    const FAIL_ID = "10715";
+
+    function checkResult() {
+      const input = document.getElementById("studentId").value.trim();
+      const resultBox = document.getElementById("result");
+
+      if (!/^\d{5}$/.test(input)) {
+        resultBox.className = "result invalid";
+        resultBox.innerText = "지원자가 아닙니다.";
+        return;
+      }
+
+      if (input === PASS_ID) {
+        resultBox.className = "result pass";
+        resultBox.innerText = "🎉 합격하셨습니다!";
+      } else if (input === FAIL_ID) {
+        resultBox.className = "result fail";
+        resultBox.innerText = "아쉽게도 불합격하셨습니다.";
+      } else {
+        resultBox.className = "result invalid";
+        resultBox.innerText = "지원자가 아닙니다.";
+      }
+    }
+  </script>
+
+</body>
+</html>
